@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -14,8 +15,7 @@ import java.util.Optional;
 public class QuestionCommandService {
     private final QuestionRepository questionRepository;
 
-    public Optional<Question> get(Long questionId)
-    {
-        return questionRepository.findById(questionId);
+    public List<Question> gets(Long questionId) {
+        return questionRepository.findAllByCategoryId(questionId);
     }
 }

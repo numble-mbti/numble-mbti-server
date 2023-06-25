@@ -23,8 +23,7 @@ public class Question {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade =  CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "answer_id")
+    @OneToMany(mappedBy = "question")
     private List<Answer> answer;
 
     @Enumerated(EnumType.STRING)
