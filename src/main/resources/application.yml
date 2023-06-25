@@ -6,3 +6,35 @@ spring:
     url: jdbc:mysql://localhost:3306/mbti?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: admin
     password: admin
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            # JavaScript 키
+            #            client-id: a8354384a760bf0fc5caa524ec0d3921
+            client-id: c3fb32e7f80ba611106cd50e7e1dea93
+            # REST API KEY
+            redirect-uri: http://localhost:8001/oauth2/kakao/redirect
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            scope: profile_nickname, account_email
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+
+security:
+  jwt:
+    token:
+      secret-key: n5wbjq0qwr2i423jf3qkmnyuiofx6z2n
