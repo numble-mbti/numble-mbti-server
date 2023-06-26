@@ -13,8 +13,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
     private final SecretKey secretKey;
-//    private final long validityInMilliseconds = 1000L * 60L * 60L * 1L; // 1시간
-    private final long validityInMilliseconds = 1000L * 10L;
+    private final long validityInMilliseconds = 1000L * 60L * 60L * 1L; // 1시간
     private final long refreshInMilliseconds = 1000L * 60L * 60L * 24L * 30L; // 1달
 
     public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") String secretKey) {
