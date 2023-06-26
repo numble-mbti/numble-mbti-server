@@ -3,7 +3,6 @@ package numble.mbti.domain.user.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import numble.mbti.domain.token.jwt.AuthenticationPrincipal;
-import numble.mbti.domain.user.dto.AccountDto;
 import numble.mbti.domain.user.dto.UserDto;
 import numble.mbti.domain.user.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -37,12 +36,5 @@ public class UserController {
 
         boolean result = false;
         return ResponseEntity.ok(result);
-    }
-
-    @PostMapping("/signup")
-    public ResponseEntity<AccountDto> signup() {
-        log.info("signup");
-        AccountDto accountDto = new AccountDto();
-        return ResponseEntity.ok(accountDto);
     }
 }
