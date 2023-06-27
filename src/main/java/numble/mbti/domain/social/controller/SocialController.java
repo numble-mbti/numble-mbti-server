@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -43,7 +42,7 @@ public class SocialController {
      * */
     @Operation(hidden = true)
     @GetMapping("/oauth2/{social}/redirect")
-    public ResponseEntity<LoginResponse> redirectLogin(@PathVariable String social, @RequestParam String code) {
+    public synchronized ResponseEntity<LoginResponse> redirectLogin(@PathVariable String social, @RequestParam String code) {
         // 소셜로그인 -> OAuthAttributes
         OAuthAttributes oAuthAttributes = socialService.oAuthLogin(code);
 
