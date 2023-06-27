@@ -27,6 +27,7 @@ public class Question {
     private List<Answer> answer;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "enum")
     private MbtiIndicator indicator;
 
     private String content;
