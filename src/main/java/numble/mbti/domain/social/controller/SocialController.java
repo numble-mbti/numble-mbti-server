@@ -3,6 +3,7 @@ package numble.mbti.domain.social.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import numble.mbti.domain.social.dto.LoginResponse;
 import numble.mbti.domain.social.dto.OAuthAttributes;
 import numble.mbti.domain.social.dto.SocialConstant;
@@ -21,6 +22,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class SocialController {
     private final SocialService socialService;
     private final UserService userService;
@@ -31,9 +33,9 @@ public class SocialController {
     @Operation(hidden = true)
     @GetMapping("/api/oauth2/{social}")
     public void socialLogin(@PathVariable String social, HttpServletResponse response) throws IOException {
+        log.info("{} 로그인", social);
         SocialConstant.SocialLoginType socialLoginType = SocialConstant.SocialLoginType.valueOf(social.toUpperCase());
         String requestURL = socialService.requestSocialLogin(socialLoginType);
-
         response.sendRedirect(requestURL);
     }
 
