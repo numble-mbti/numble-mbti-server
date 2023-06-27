@@ -30,7 +30,6 @@ public class SocialController {
     /**
      * 소셜로그인창 요구
      * */
-    @Operation(hidden = true)
     @GetMapping("/api/oauth2/{social}")
     public void socialLogin(@PathVariable String social, HttpServletResponse response) throws IOException {
         log.info("{} 로그인", social);
