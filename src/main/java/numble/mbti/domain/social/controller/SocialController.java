@@ -1,8 +1,8 @@
 package numble.mbti.domain.social.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import numble.mbti.domain.social.dto.LoginResponse;
 import numble.mbti.domain.social.dto.OAuthAttributes;
 import numble.mbti.domain.social.dto.SocialConstant;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class SocialController {
@@ -29,13 +28,11 @@ public class SocialController {
     /**
      * 소셜로그인창 요구
      * */
+    @Operation(hidden = true)
     @GetMapping("/api/oauth2/{social}")
     public void socialLogin(@PathVariable String social, HttpServletResponse response) throws IOException {
-        log.info("socialLogin");
-
         SocialConstant.SocialLoginType socialLoginType = SocialConstant.SocialLoginType.valueOf(social.toUpperCase());
         String requestURL = socialService.requestSocialLogin(socialLoginType);
-        log.info("requestURL={}",requestURL);
 
         response.sendRedirect(requestURL);
     }
@@ -45,11 +42,9 @@ public class SocialController {
      *  code 포함
      *  code로 토큰 발급
      * */
+    @Operation(hidden = true)
     @GetMapping("/oauth2/{social}/redirect")
     public ResponseEntity<LoginResponse> redirectLogin(@PathVariable String social, @RequestParam String code) {
-        log.info("redirectLogin");
-        log.info("social: {}, code: {}", social, code);
-
         // 소셜로그인 -> OAuthAttributes
         OAuthAttributes oAuthAttributes = socialService.oAuthLogin(code);
 
