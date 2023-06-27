@@ -3,6 +3,7 @@ package numble.mbti.domain.social.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import numble.mbti.domain.social.dto.LoginResponse;
 import numble.mbti.domain.social.dto.OAuthAttributes;
 import numble.mbti.domain.social.dto.SocialConstant;
@@ -12,15 +13,13 @@ import numble.mbti.domain.token.service.TokenService;
 import numble.mbti.domain.user.entity.User;
 import numble.mbti.domain.user.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class SocialController {
     private final SocialService socialService;
     private final UserService userService;
@@ -31,9 +30,9 @@ public class SocialController {
     @Operation(hidden = true)
     @GetMapping("/api/oauth2/{social}")
     public void socialLogin(@PathVariable String social, HttpServletResponse response) throws IOException {
+        log.info("{} 로그인", social);
         SocialConstant.SocialLoginType socialLoginType = SocialConstant.SocialLoginType.valueOf(social.toUpperCase());
         String requestURL = socialService.requestSocialLogin(socialLoginType);
-
         response.sendRedirect(requestURL);
     }
 
@@ -44,7 +43,7 @@ public class SocialController {
      * */
     @Operation(hidden = true)
     @GetMapping("/oauth2/{social}/redirect")
-    public ResponseEntity<LoginResponse> redirectLogin(@PathVariable String social, @RequestParam String code) {
+    public synchronized ResponseEntity<LoginResponse> redirectLogin(@PathVariable String social, @RequestParam String code) {
         // 소셜로그인 -> OAuthAttributes
         OAuthAttributes oAuthAttributes = socialService.oAuthLogin(code);
 
