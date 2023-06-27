@@ -2,6 +2,7 @@ package numble.mbti.domain.features.entity;
 
 import numble.mbti.domain.category.entity.Category;
 import numble.mbti.domain.features.contstant.FeaturesAttribute;
+import numble.mbti.domain.features.contstant.MbtiType;
 import numble.mbti.domain.features.converter.FeaturesContentConvert;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -19,6 +20,13 @@ public class Features {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    //private String name;
+
+//    @Enumerated(EnumType.STRING)
+//    @Column(columnDefinition = "enum")
+//    private MbtiType type;
+
 
     @Convert(converter = FeaturesContentConvert.class)
     private FeaturesAttribute Content;

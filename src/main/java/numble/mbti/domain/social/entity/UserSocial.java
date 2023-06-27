@@ -20,8 +20,8 @@ public class UserSocial {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(length = 20)
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "enum", length = 20)
     private Provider provider;
 
     private Long providerId;

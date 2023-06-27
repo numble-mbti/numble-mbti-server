@@ -1,17 +1,13 @@
 package numble.api.mbti.service;
 
-import numble.api.category.controller.response.CategoryGetResponse;
 import numble.api.mbti.controller.response.MbtiCheckGetResponse;
 import numble.mbti.domain.question.service.QuestionCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
-public class MbtiCheckService {
+public class MbtiService {
 
     private final QuestionCommandService questionCommandService;
 
@@ -20,4 +16,10 @@ public class MbtiCheckService {
         var question = questionCommandService.gets(id);
         return MbtiCheckGetResponse.from(id,question);
     }
+//
+//    public MbtiCheckGetResponse getMbtiFeatureByCategory(Long categoryId, String type)
+//    {
+//        var question = questionCommandService.gets(id);
+//        return MbtiCheckGetResponse.from(id,question);
+//    }
 }

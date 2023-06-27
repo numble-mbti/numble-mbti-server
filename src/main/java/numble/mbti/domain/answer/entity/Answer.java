@@ -1,7 +1,7 @@
 package numble.mbti.domain.answer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import numble.mbti.domain.answer.constant.MbtiType;
+import numble.mbti.domain.answer.constant.MbtiAttribute;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,7 +19,8 @@ public class Answer {
 
     //TODo Converter 변경 필요
     @Enumerated(EnumType.STRING)
-    private MbtiType type;
+    @Column(columnDefinition = "enum")
+    private MbtiAttribute type;
 
     private String content;
 
