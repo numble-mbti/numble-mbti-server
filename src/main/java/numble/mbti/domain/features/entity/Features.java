@@ -21,13 +21,16 @@ public class Features {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    //private String name;
+    private String name;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(columnDefinition = "enum")
-//    private MbtiType type;
+    private Integer grade;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "enum")
+    private MbtiType type;
 
 
     @Convert(converter = FeaturesContentConvert.class)
+    @Column(length = 2000)
     private FeaturesAttribute Content;
 }
