@@ -16,6 +16,9 @@ public class Config implements WebMvcConfigurer {
         registry.addMapping("/oauth2/**")
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","))
                 .exposedHeaders(HttpHeaders.LOCATION);
+        registry.addMapping("/**")
+                .allowedOrigins("https://animal-mbti-test.vercel.app")
+                .allowedMethods(ALLOWED_METHOD_NAMES.split(","));
 
     }
 
