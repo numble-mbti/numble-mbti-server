@@ -21,12 +21,12 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "동물 유형 API")
 public class CategoryRestCotroller {
     private  final CategoryService categoryService;
 
     @GetMapping("/categories")
     @Operation(summary = "카테고리 목록 조회")
-    @Tag(name = "카테고리 목록 조회", description = "멸종 위기 동물 카테고리 조회 api")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "카테고리 목록 조회", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CategoryGetResponse.class)) }),
             @ApiResponse(responseCode = "400", description = "카테고리 목록 조회 실패", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponseDto.class)) )})

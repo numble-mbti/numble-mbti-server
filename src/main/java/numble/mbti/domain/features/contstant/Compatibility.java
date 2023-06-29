@@ -1,13 +1,11 @@
 package numble.mbti.domain.features.contstant;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Compatibility {
-    private Attribute best;
-    private Attribute worst;
+    private CompatibilityType best;
+    private CompatibilityType worst;
 }
-
-class Attribute{
-    private String mbti;
-    private String name;
-    private String description;
-}
-
