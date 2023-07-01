@@ -67,5 +67,5 @@ jobs:
             docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
             docker stop $(docker ps -a -q)
             docker rm $(docker ps -a -q)
-            docker run -d -p 80:8001 ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
+            docker run -d -p 8001:8001 ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
             docker image prune -f
