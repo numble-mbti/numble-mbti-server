@@ -26,8 +26,9 @@ public class ArchiveService {
 
         List<Category> categories = categoryRepository.findAll();
         // 카테고리(테스트)가 없는 경우
+
         if (categories.isEmpty()) {
-            return null;
+            return result;
         }
 
         List<ArchiveDto> archives = new ArrayList<>();
@@ -38,22 +39,16 @@ public class ArchiveService {
                     .findByUser_IdAndFeature_CategoryIdOrderByCreatedAtDesc(userId, category.getId(), pageRequest)
                     .stream().map((e) -> new ArchiveDto(e)).toList();
 
-            // 테스트(카테고리)는 있지만 결과가 없는 경우
-            if (archives.isEmpty()) {
-                ArchivesWithCategory recordsWithCategory = ArchivesWithCategory.builder().categoryId(category.getId())
-                        .archives(null).build();
-                result.add(recordsWithCategory);
-            } else {
-                ArchivesWithCategory recordsWithCategory = ArchivesWithCategory.builder().categoryId(category.getId())
-                        .archives(archives).build();
-                result.add(recordsWithCategory);
-            }
+            ArchivesWithCategory recordsWithCategory = ArchivesWithCategory.builder().categoryId(category.getId()).categoryTitle(category.getTitle())
+                    .archives(archives).build();
+            result.add(recordsWithCategory);
+
         }
 
         return result;
     }
 
-    // 한 종류의 테스트(카테고리)를 전부 가져와주는 메서드 
+    // 한 종류의 테스트(카테고리)를 전부 가져와주는 메서드
     public ArchivesWithCategory getAllArchivesdWithCategory(Long userId, Long categoryId) {
         List<ArchiveDto> archives = archiveRepository
                 .findByUser_IdAndFeature_CategoryIdOrderByCreatedAtDesc(userId, categoryId).stream()

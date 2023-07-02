@@ -14,5 +14,6 @@ import lombok.Data;
 @JsonNaming(value=PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ArchivesWithCategory {
     private Long categoryId;
+    private String categoryTitle;
     private List<ArchiveDto> archives;
 }
