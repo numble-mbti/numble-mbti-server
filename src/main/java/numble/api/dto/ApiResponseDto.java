@@ -21,6 +21,5 @@ public class ApiResponseDto<T>{
     public static <T> ApiResponseDto<T> create(T data, String message) {
         return new ApiResponseDto<>(data, message);
     }
-
 }
 
