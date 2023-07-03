@@ -1,6 +1,7 @@
 package numble.mbti.domain.user.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Setter;
 import lombok.ToString;
 import numble.mbti.domain.user.entity.User;
@@ -19,6 +20,13 @@ public class UserDto {
 
     public UserDto() {
         this.email = "";
+    }
+
+    @Builder
+    public UserDto(String email, String nickname, String role) {
+        this.email = email;
+        this.nickname = nickname;
+        this.role = role;
     }
 
     public Long getId() {
