@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import numble.mbti.domain.social.dto.LoginResponse;
+import numble.mbti.domain.social.dto.LoginURLResponse;
 import numble.mbti.domain.social.dto.OAuthAttributes;
 import numble.mbti.domain.social.dto.SocialConstant;
 import numble.mbti.domain.social.entity.UserSocial;
@@ -30,16 +31,17 @@ public class SocialController {
     private final GoogleOauth googleOauth;
     private final KakaoOauth kakaoOauth;
     /**
-     * 소셜로그인창 요구
+     * 소셜로그인창 인증 URL 요구
      * */
-    @Operation(hidden = true)
     @GetMapping("/api/oauth2/{social}")
-    public void socialLogin(@PathVariable String social, HttpServletResponse response) throws IOException {
+    public ResponseEntity<LoginURLResponse> socialLogin(@PathVariable String social, HttpServletResponse response) throws IOException {
         log.info("{} 로그인", social);
         SocialConstant.SocialLoginType socialLoginType = SocialConstant.SocialLoginType.valueOf(social.toUpperCase());
         String requestURL = socialService.requestSocialLogin(socialLoginType);
-        response.sendRedirect(requestURL);
+//        response.sendRedirect(requestURL);
+        return ResponseEntity.ok(new LoginURLResponse(requestURL));
     }
+
 
     /**
      *  로그인 성공후 리다이렉트
