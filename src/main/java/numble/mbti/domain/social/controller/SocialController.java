@@ -50,7 +50,7 @@ public class SocialController {
      * */
 //    @Operation(hidden = true)
 //    @GetMapping("/oauth2/{social}/redirect")
-    @GetMapping("/afterlogin/{social}")
+    @GetMapping("/api/afterlogin/{social}")
     public synchronized ResponseEntity<LoginResponse> redirectLogin(@PathVariable String social, @RequestParam String code) {
         // 소셜로그인 -> OAuthAttributes
         log.info("social: {}", social);
