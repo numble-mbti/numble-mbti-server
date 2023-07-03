@@ -23,7 +23,7 @@ public class UserService {
     private final UserJpaRepository userJpaRepository;
     private final UserSocialJpaRepository userSocialJpaRepository;
     private final RoleJpaRepository roleJpaRepository;
-    private final TokenService tokenService;
+
     @Transactional
     public User signup(final OAuthAttributes oAuthAttributes){
         Role role = roleJpaRepository.findById(1L).
@@ -35,11 +35,12 @@ public class UserService {
         User user = oAuthAttributes.toEntity();
         user.setRole(role);
         User savedUser = userJpaRepository.save(user);
-
+        long providerId = oAuthAttributes.getProviderId();
+        Provider provider = Provider.valueOf(oAuthAttributes.getNameAttributeKey().toUpperCase());
         UserSocial userSocial = UserSocial.builder()
                 .user(savedUser)
-                .provider(Provider.KAKAO)
-                .providerId(oAuthAttributes.getProviderId())
+                .provider(provider)
+                .providerId(providerId)
                 .build();
 
         userSocialJpaRepository.save(userSocial);

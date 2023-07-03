@@ -31,23 +31,22 @@ public class OAuthAttributes {
     public static OAuthAttributes of(String socialName, String usernameAttributeName, Map<String , Object> attributes) {
         if(SocialConstant.SocialLoginType.KAKAO.name().equals(socialName.toUpperCase())) {
             log.info("OAuthAttributes: {}",socialName);
-            return ofKakao("id", attributes);
+            return ofKakao(socialName, attributes);
         }
-        return ofGoogle(usernameAttributeName, attributes);
+        return ofGoogle(socialName, attributes);
     }
 
     /**
      * kakao_account.profile
      * */
     private static OAuthAttributes ofKakao(String usernameAttributeName, Map<String, Object> attributes) {
-
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
         double providerId = (double) attributes.get("id");
-        log.info(providerId+"");
-        String email = (String) ObjectUtils.defaultIfNull(kakaoProfile.get("email"), "");
+        String email = (String) ObjectUtils.defaultIfNull(kakaoAccount.get("email"), "");
+        String nickname = (String) kakaoProfile.get("nickname");
         return OAuthAttributes.builder()
-                .nickname((String) kakaoProfile.get("nickname"))
+                .nickname(nickname)
                 .providerId((long) providerId)
                 .email(email)
                 .attributes(attributes)
@@ -56,7 +55,16 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofGoogle(String usernameAttributeName, Map<String, Object> attributes) {
-        return null;
+        double providerId = Double.valueOf(attributes.get("id").toString());
+        String email = ObjectUtils.defaultIfNull((String) attributes.get("email"), "");
+        String nickname = (String) attributes.get("name");
+        return OAuthAttributes.builder()
+                .nickname(nickname)
+                .providerId((long) providerId)
+                .email(email)
+                .attributes(attributes)
+                .nameAttributeKey(usernameAttributeName)
+                .build();
     }
 
     public User toEntity(){

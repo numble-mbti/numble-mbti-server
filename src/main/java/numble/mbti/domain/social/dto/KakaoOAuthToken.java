@@ -7,14 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 @Builder
-public class KakaoOAuthToken {
-    @SerializedName("access_token")
-    @JsonProperty("access_token")
-    private String accessToken;
+public class KakaoOAuthToken extends OAuthToken{
     @SerializedName("token_type")
     @JsonProperty("token_type")
     private String tokenType;
@@ -29,4 +25,8 @@ public class KakaoOAuthToken {
     private int refreshTokenExpiresIn;
     @JsonProperty("scope")
     private String scope;
+
+    public KakaoOAuthToken(String accessToken) {
+        super(accessToken);
+    }
 }
