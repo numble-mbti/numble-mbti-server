@@ -76,7 +76,7 @@ public class SocialController {
             }
 
             // 유효성 검사후 발급
-            LoginResponse loginResponse = new LoginResponse(tokenService.requestToken(user));
+            LoginResponse loginResponse = new LoginResponse(tokenService.requestToken(user), user.getNickname(), user.getEmail());
             return ResponseEntity.ok(loginResponse);
         }
     }
