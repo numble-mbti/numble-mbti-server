@@ -46,8 +46,9 @@ public class SocialController {
      *  code 포함
      *  code로 토큰 발급
      * */
-    @Operation(hidden = true)
-    @GetMapping("/oauth2/{social}/redirect")
+//    @Operation(hidden = true)
+//    @GetMapping("/oauth2/{social}/redirect")
+    @GetMapping("/afterlogin/{social}")
     public synchronized ResponseEntity<LoginResponse> redirectLogin(@PathVariable String social, @RequestParam String code) {
         // 소셜로그인 -> OAuthAttributes
         log.info("social: {}", social);
