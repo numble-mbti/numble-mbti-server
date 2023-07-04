@@ -48,8 +48,41 @@ public class SocialController {
      *  code 포함
      *  code로 토큰 발급
      * */
-//    @Operation(hidden = true)
-//    @GetMapping("/oauth2/{social}/redirect")
+    @Operation(hidden = true)
+    @GetMapping("/oauth2/{social}/redirect")
+    public synchronized ResponseEntity<LoginResponse> redirectLoginLocal(@PathVariable String social, @RequestParam String code) {
+        // 소셜로그인 -> OAuthAttributes
+        log.info("social: {}", social);
+        log.info("code: {}", code);
+        OAuthAttributes oAuthAttributes;
+        if (SocialConstant.SocialLoginType.valueOf(social.toUpperCase()).equals(SocialConstant.SocialLoginType.GOOGLE)){
+            oAuthAttributes = socialService.oAuthLogin(code, googleOauth);
+        } else {
+            oAuthAttributes = socialService.oAuthLogin(code, kakaoOauth);
+        }
+
+        User user;
+        if(!socialService.existsByProviderId(oAuthAttributes.getProviderId())) {
+            // 회원가입
+            user = userService.signup(oAuthAttributes);
+            // AT, RT 발급
+            return ResponseEntity.ok(tokenService.save(user));
+        } else {
+            UserSocial userSocial = socialService.findByProviderId(oAuthAttributes.getProviderId());
+            user = userSocial.getUser();
+
+            if(!oAuthAttributes.getEmail().equals("") && user.getEmail().equals("")){
+                log.info("이메일 저장");
+                user.setEmail(oAuthAttributes.getEmail());
+                userService.updateUser(UserDto.toDto(user));
+            }
+
+            // 유효성 검사후 발급
+            LoginResponse loginResponse = new LoginResponse(tokenService.requestToken(user), user.getNickname(), user.getEmail());
+            return ResponseEntity.ok(loginResponse);
+        }
+    }
+
     @GetMapping("/api/afterlogin/{social}")
     public synchronized ResponseEntity<LoginResponse> redirectLogin(@PathVariable String social, @RequestParam String code) {
         // 소셜로그인 -> OAuthAttributes
