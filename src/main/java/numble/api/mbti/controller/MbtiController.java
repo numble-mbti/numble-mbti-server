@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import numble.api.dto.ApiResponseDto;
 import numble.api.mbti.controller.response.MbtiCheckGetResponse;
@@ -27,18 +28,18 @@ public class MbtiController {
     private final MbtiService mbtiService;
 
     @GetMapping("/{categoryId}/check")
-    @Operation(summary = "동물 유형 카테고리별 mbti 검사 질문 목록 조회 ")
+    @Operation(summary = "동물 유형 카테고리별 mbti 검사 질문 목록 조회", security = {@SecurityRequirement(name = "jwtAuth")})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "카테고리별 mbti 검사 목록 조회", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MbtiCheckGetResponse.class)) }),
-            @ApiResponse(responseCode = "400", description = "카테고리별 mbti 검사 목록 실패", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponseDto.class)) )})
-    public ResponseEntity<ApiResponseDto<MbtiCheckGetResponse>> getMbtiCheck (@Parameter(name = "categoryId", description = "동물 유형 카테고리 id", in = ParameterIn.PATH) @PathVariable Long categoryId)
+            @ApiResponse(responseCode = "400", description = "카테고리별 mbti 검사 목록 실패", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponseDto.class)) )
+    }) public ResponseEntity<ApiResponseDto<MbtiCheckGetResponse>> getMbtiCheck (@Parameter(name = "categoryId", description = "동물 유형 카테고리 id", in = ParameterIn.PATH) @PathVariable Long categoryId)
     {
         var response = mbtiService.getMbtiCheck(categoryId);
         return ResponseEntity.ok(ApiResponseDto.create(response));
     }
 
     @GetMapping("/{categoryId}/features")
-   @Operation(summary = "동물 유형 카테고리별 mbti 검사 결과 목록 조회 ")
+    @Operation(summary = "동물 유형 카테고리별 mbti 검사 결과 목록 조회 ", security = {@SecurityRequirement(name = "jwtAuth")})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "동물 유형별 mbti 검사 목록 조회", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MbtiFeaturesResponse.class)) }),
             @ApiResponse(responseCode = "400", description = "동물 유형별  mbti 검사 목록 실패", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MbtiFeaturesResponse.class)) )})

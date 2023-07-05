@@ -1,41 +1,68 @@
 package numble.mbti.global.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.security.SecurityScheme.In;
+import io.swagger.v3.oas.models.security.SecurityScheme.Type;
+import numble.mbti.domain.token.jwt.AuthenticationInterceptor;
+import numble.mbti.domain.token.jwt.JwtTokenProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@OpenAPIDefinition(servers = {@Server(url="https://animals-mbti-numble.o-r.kr", description="default server url")})
 @Configuration
-public class SwaggerConfig {
-    @Bean
-    public OpenAPI openAPI() {
+@OpenAPIDefinition(servers = {@Server(url="https://animals-mbti-numble.o-r.kr", description="default server url")})
+public class SwaggerConfig implements WebMvcConfigurer {
 
-        Info info = new Info()
-                .version("v1.0.0")
-                .title("MBTI");
+    @Value("${server.port}")
+    private String serverPort;
 
-        // SecuritySecheme명
-        String jwtSchemeName = "jwtAuth";
-        // API 요청헤더에 인증정보 포함
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
-        // SecuritySchemes 등록
-        Components components = new Components()
-                .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
-                        .name(jwtSchemeName)
-                        .type(SecurityScheme.Type.HTTP) // HTTP 방식
-                        .scheme("bearer")
-                        .bearerFormat("JWT")); // 토큰 형식을 지정하는 임의의 문자(Optional)
+    private final JwtTokenProvider jwtTokenProvider;
 
-        return new OpenAPI()
-                .info(info)
-                .addSecurityItem(securityRequirement)
-                .components(components);
+    public SwaggerConfig(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    @Bean
+    public OpenAPI customOpenAPI() {
+        // API 정보 설정
+        Info info = new Info()
+                .title("MBTI API")
+                .description("API Documentation for MBTI")
+                .version("1.0.0");
+
+        // 컴포넌트 설정
+        Components components = new Components()
+                .addSecuritySchemes("bearer-key", new SecurityScheme()
+                        .type(Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT")
+                        .in(In.HEADER)
+                        .name("Authorization"));
+
+        // 경로 설정
+        Paths paths = new Paths();
+
+        // OpenAPI 설정
+        OpenAPI openAPI = new OpenAPI()
+                .info(info)
+                .components(components)
+                .paths(paths);
+
+        return openAPI;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 인터셉터 설정
+        registry.addInterceptor(new AuthenticationInterceptor(jwtTokenProvider))
+                .addPathPatterns("/api/users/**");
+    }
 }

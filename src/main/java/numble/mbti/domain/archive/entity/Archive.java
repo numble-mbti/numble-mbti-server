@@ -2,6 +2,10 @@ package numble.mbti.domain.archive.entity;
 
 import java.time.LocalDateTime;
 
+import lombok.*;
+import numble.api.record.controller.response.UserMbtiResultRequest;
+import numble.mbti.domain.category.entity.Category;
+import numble.mbti.domain.record.entity.UserRecord;
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
@@ -12,15 +16,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import numble.mbti.domain.features.entity.Features;
 import numble.mbti.domain.user.entity.User;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@Builder
 public class Archive {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,4 +40,11 @@ public class Archive {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    public static Archive fromUserMbtiResultRequest(User user, Features feature) {
+        return Archive.builder()
+                .user(user)
+                .feature(feature)
+                .build();
+    }
 }
