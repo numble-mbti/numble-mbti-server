@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@OpenAPIDefinition
+@OpenAPIDefinition(servers = {@Server(url="https://animals-mbti-numble.o-r.kr", description="default server url")})
 public class SwaggerConfig implements WebMvcConfigurer {
 
     @Value("${server.port}")

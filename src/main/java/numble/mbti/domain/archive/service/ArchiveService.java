@@ -68,7 +68,7 @@ public class ArchiveService {
                 .findByUser_IdAndFeature_CategoryIdOrderByCreatedAtDesc(userId, categoryId).stream()
                 .map((e) -> new ArchiveDto(e)).toList();
 
-        return ArchivesWithCategory.builder().archives(archives).categoryId(categoryId).build();
+        return ArchivesWithCategory.builder().archives(archives).categoryId(categoryId).categoryTitle(categoryRepository.findById(categoryId).get().getTitle()).build();
     }
 
     public Optional<Archive> saveUserResult(Long userId, UserMbtiResultRequest request) {
