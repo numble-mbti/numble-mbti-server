@@ -36,7 +36,7 @@ public class TokenServiceImpl implements TokenService {
                 .accessToken(jwtToken)
                 .build();
         tokenJpaRepository.save(authToken);
-        return new LoginResponse(jwtToken);
+        return new LoginResponse(jwtToken, user.getNickname(), user.getEmail());
     }
 
     @Override

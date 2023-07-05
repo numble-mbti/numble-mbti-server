@@ -5,7 +5,9 @@ import numble.mbti.domain.features.entity.Features;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface FeaturesRepository extends JpaRepository<Features, Long> {
-    Features findByCategoryIdAndType(Long categoryId, MbtiType type);
+    Optional<Features> findByCategoryIdAndType(Long categoryId, MbtiType type);
 }

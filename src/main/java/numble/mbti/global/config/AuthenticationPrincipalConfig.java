@@ -25,7 +25,16 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthenticationInterceptor(jwtTokenProvider))
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/oauth2/**", "/api/categories", "/api/mbti/**", "/api/health");
+                .excludePathPatterns(
+                        "/api/oauth2/**",
+                        "/api/categories",
+                        "/api/mbti/**",
+                        "/api/health",
+                        "/api/afterlogin/**",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**"
+                );
     }
 }
 
