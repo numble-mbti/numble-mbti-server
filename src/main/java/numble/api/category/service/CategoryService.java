@@ -14,8 +14,7 @@ public class CategoryService {
 
     private final CategoryCommandService categoryCommandService;
 
-    public List<CategoryGetResponse> gets()
-    {
+    public List<CategoryGetResponse> gets(){
         var categories = categoryCommandService.gets();
         return categories.stream()
                 .map(category -> CategoryGetResponse.from(category))

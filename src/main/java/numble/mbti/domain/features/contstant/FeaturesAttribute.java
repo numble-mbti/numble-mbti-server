@@ -9,6 +9,7 @@ import java.util.List;
 @Setter
 public class FeaturesAttribute {
     private List<String> contents;
+    private List<String> sub_contents;
     private Compatibility compatibility;
 
 }
