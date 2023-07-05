@@ -1,23 +1,37 @@
 package numble.api.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.http.HttpStatus;
 
-import java.util.List;
-
-@Getter
-@Builder
 public class ApiErrorResponseDto {
 
-        private int status;
-        private List<String> errorMessages;
+    private final String message;
 
-        public static ApiErrorResponseDto of(HttpStatus status, List<String> errorMessages) {
-            return ApiErrorResponseDto.builder()
-                    .status(status.value())
-                    .errorMessages(errorMessages)
-                    .build();
-        }
+    private final int status;
 
+    ApiErrorResponseDto(Throwable throwable, HttpStatus status) {
+        this(throwable.getMessage(), status);
+    }
+
+    ApiErrorResponseDto(String message, HttpStatus status) {
+        this.message = message;
+        this.status = status.value();
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("message", message)
+                .append("status", status)
+                .toString();
+    }
 }

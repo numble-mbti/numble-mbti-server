@@ -3,11 +3,12 @@ package numble.mbti.domain.features.entity;
 import numble.mbti.domain.category.entity.Category;
 import numble.mbti.domain.features.contstant.FeaturesAttribute;
 import numble.mbti.domain.features.contstant.MbtiType;
-import numble.mbti.domain.features.converter.FeaturesContentConvert;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import numble.mbti.domain.features.converter.FeaturesContentConvert;
 
 @Getter
 @Entity
@@ -28,7 +29,6 @@ public class Features {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "enum")
     private MbtiType type;
-
 
     @Convert(converter = FeaturesContentConvert.class)
     @Column(length = 2000)
