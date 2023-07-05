@@ -15,6 +15,6 @@ public class FeaturesCommandService {
     private final FeaturesRepository featuresRepository;
 
     public Optional<Features> get(Long categoryId, MbtiType type) {
-        return Optional.ofNullable(featuresRepository.findByCategoryIdAndType(categoryId, type));
+        return featuresRepository.findByCategoryIdAndType(categoryId, type);
     }
 }
