@@ -64,4 +64,16 @@ public class JwtTokenProvider {
     public String getPayload(final String token) {
         return parseClaims(token).getBody().getSubject();
     }
+
+    public Long getUserIdFromToken(final String token) {
+        try {
+            Jws<Claims> claimsJws = parseClaims(token);
+            String payload = claimsJws.getBody().getSubject();
+            return Long.parseLong(payload);
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredTokenException(token);
+        } catch (Exception e) {
+            throw new InvalidTokenException(token);
+        }
+    }
 }

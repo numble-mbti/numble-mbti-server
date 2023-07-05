@@ -14,7 +14,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class QuestionCommandService {
     private final QuestionRepository questionRepository;
-
     public List<Question> gets(Long questionId) {
         return questionRepository.findAllByCategoryId(questionId);
     }
