@@ -73,12 +73,12 @@ jobs:
           password: ${{ secrets.DEPLOYMENT_PASSWORD }}
           port: ${{ secrets.DEPLOYMENT_PORT }}
           script: |
-            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
+            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:first
             docker stop $(docker ps -a -q)
             docker rm $(docker ps -a -q)
             docker run -d -p 8001:8001 ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:first
             docker image prune -f
-            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
+            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:second
             docker stop $(docker ps -a -q)
             docker rm $(docker ps -a -q)
             docker run -d -p 8002:8001 ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:second
