@@ -46,8 +46,8 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.NCP_CONTAINER_REGISTRY }}1/tag-name:latest
-        cache-from: type=registry,ref=${{ secrets.NCP_CONTAINER_REGISTRY }}1/tag-name:latest
+        tags: ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:first
+        cache-from: type=registry,ref=${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:first
         cache-to: type=inline   
     - name: build and push second image
       uses: docker/build-push-action@v3
@@ -55,8 +55,8 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.NCP_CONTAINER_REGISTRY }}2/tag-name:latest
-        cache-from: type=registry,ref=${{ secrets.NCP_CONTAINER_REGISTRY }}2/tag-name:latest
+        tags: ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:second
+        cache-from: type=registry,ref=${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:second
         cache-to: type=inline
 
 
@@ -73,13 +73,13 @@ jobs:
           password: ${{ secrets.DEPLOYMENT_PASSWORD }}
           port: ${{ secrets.DEPLOYMENT_PORT }}
           script: |
-            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}1/tag-name
+            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
             docker stop $(docker ps -a -q)
             docker rm $(docker ps -a -q)
-            docker run -d -p 8001:8001 ${{ secrets.NCP_CONTAINER_REGISTRY }}1/tag-name
+            docker run -d -p 8001:8001 ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:first
             docker image prune -f
-            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}2/tag-name
+            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
             docker stop $(docker ps -a -q)
             docker rm $(docker ps -a -q)
-            docker run -d -p 8002:8001 ${{ secrets.NCP_CONTAINER_REGISTRY }}2/tag-name
+            docker run -d -p 8002:8001 ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:second
             docker image prune -f
