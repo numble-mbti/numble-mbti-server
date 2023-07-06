@@ -42,7 +42,7 @@ public class KakaoOauth implements SocialOauth {
     @Override
     public String getOauthRedirectURL() {
         Map<String, String> params = new HashMap<>();
-        params.put("scope", scope);
+//        params.put("scope", scope);
         params.put("response_type","code");
         params.put("client_id", clientId);
         params.put("redirect_uri", kakaoRedirectUrl);
