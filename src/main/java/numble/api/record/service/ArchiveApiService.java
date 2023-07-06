@@ -2,16 +2,16 @@ package numble.api.record.service;
 
 import lombok.RequiredArgsConstructor;
 import numble.api.record.controller.response.UserMbtiResultRequest;
-import numble.mbti.domain.record.service.RecordCommandService;
+import numble.mbti.domain.archive.service.ArchiveService;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RecordService {
+public class ArchiveApiService {
 
-    private final RecordCommandService recordCommandService;
+    private final ArchiveService archiveService;
 
     public boolean saveUserResult(Long userId, UserMbtiResultRequest request) {
-       return recordCommandService.saveUserResult(userId, request).isPresent();
+       return archiveService.saveUserResult(userId, request).isPresent();
     }
 }

@@ -19,7 +19,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         String token = AuthorizationExtractor.extract(request);
 
         try {
-            jwtTokenProvider.validateToken(token);
+            //jwtTokenProvider.validateToken(token);
             request.setAttribute("token", token); // 토큰을 HttpServletRequest에 저장
             return true;
         } catch (Exception e) {

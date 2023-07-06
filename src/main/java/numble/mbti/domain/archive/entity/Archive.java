@@ -3,9 +3,7 @@ package numble.mbti.domain.archive.entity;
 import java.time.LocalDateTime;
 
 import lombok.*;
-import numble.api.record.controller.response.UserMbtiResultRequest;
-import numble.mbti.domain.category.entity.Category;
-import numble.mbti.domain.record.entity.UserRecord;
+import numble.mbti.global.BaseEntity;
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
@@ -24,7 +22,7 @@ import numble.mbti.domain.user.entity.User;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor
 @Builder
-public class Archive {
+public class Archive extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long archiveSeq;

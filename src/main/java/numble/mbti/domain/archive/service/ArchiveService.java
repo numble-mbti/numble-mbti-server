@@ -3,17 +3,13 @@ package numble.mbti.domain.archive.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import lombok.Builder;
 import numble.api.record.controller.response.UserMbtiResultRequest;
 import numble.mbti.domain.archive.entity.Archive;
 import numble.mbti.domain.features.contstant.MbtiType;
-import numble.mbti.domain.features.entity.Features;
 import numble.mbti.domain.features.service.FeaturesCommandService;
-import numble.mbti.domain.record.entity.UserRecord;
-import numble.mbti.domain.record.repository.RecordRepository;
-import numble.mbti.domain.user.entity.User;
 import numble.mbti.domain.user.repository.UserJpaRepository;
+import numble.mbti.global.exception.BusinessException;
+import numble.mbti.global.exception.constant.ErrorCode;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -72,22 +68,16 @@ public class ArchiveService {
     }
 
     public Optional<Archive> saveUserResult(Long userId, UserMbtiResultRequest request) {
-        Optional<User> user = userJpaRepository.findById(userId);
-        if (user.isEmpty()) {
-            return Optional.empty();
-        }
 
-        String resultMbtiType = request.getResultMbtiType();
-        MbtiType mbtiType = MbtiType.valueOf(resultMbtiType);
-
-        Optional<Features> features = featuresCommandService.get(userId, mbtiType);
-        if (features.isEmpty()) {
-            return Optional.empty();
-        }
-
-        Archive record = Archive.fromUserMbtiResultRequest(user.get(), features.get());
-        Archive savedRecord = archiveRepository.save(record);
-        return Optional.of(savedRecord);
+        return Optional.ofNullable(userJpaRepository.findById(userId)
+                .flatMap(user -> {
+                    String resultMbtiType = request.getResultMbtiType();
+                    MbtiType mbtiType = MbtiType.valueOf(resultMbtiType);
+                    return featuresCommandService.get(request.getCategoryId(), mbtiType)
+                            .map(features -> Archive.fromUserMbtiResultRequest(user, features))
+                            .map(archiveRepository::save);
+                })
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_EXISTS_INFO)));
     }
 
 }
