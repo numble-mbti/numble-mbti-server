@@ -17,14 +17,16 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     }
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("인터셉터 실행: {}", request.getHeader("Authorization"));
+        if (CorsUtils.isPreFlightRequest(request)) {
+            log.info("isPreFlightRequest");
+            return true;
+        }
         String token = AuthorizationExtractor.extract(request);
 
         try {
             //jwtTokenProvider.validateToken(token);
             request.setAttribute("token", token); // 토큰을 HttpServletRequest에 저장
-            if (CorsUtils.isPreFlightRequest(request)) {
-                return true;
-            }
+
             return true;
         } catch (Exception e) {
             // 유효하지 않은 토큰 또는 토큰이 없는 경우 처리 로직 추가
