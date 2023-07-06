@@ -18,6 +18,7 @@ public class Config implements WebMvcConfigurer {
                 .exposedHeaders(HttpHeaders.LOCATION);
         registry.addMapping("/**")
                 .allowedOrigins("https://animal-mbti-test.vercel.app")
+                .allowedOrigins("http://localhost:3000")
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","));
 
     }
