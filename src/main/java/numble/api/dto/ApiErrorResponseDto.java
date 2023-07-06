@@ -14,7 +14,7 @@ public class ApiErrorResponseDto {
         this(throwable.getMessage(), status);
     }
 
-    ApiErrorResponseDto(String message, HttpStatus status) {
+    public ApiErrorResponseDto(String message, HttpStatus status) {
         this.message = message;
         this.status = status.value();
     }
