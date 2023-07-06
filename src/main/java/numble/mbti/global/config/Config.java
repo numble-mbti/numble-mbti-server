@@ -19,8 +19,8 @@ public class Config implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("https://animal-mbti-test.vercel.app")
                 .allowedOrigins("http://localhost:3000")
-                .allowedMethods(ALLOWED_METHOD_NAMES.split(","));
-
+                .allowedMethods(ALLOWED_METHOD_NAMES.split(","))
+                .maxAge(3600); // 3600초 동안 preflight 결과를 캐시에 저장
     }
 
 }
