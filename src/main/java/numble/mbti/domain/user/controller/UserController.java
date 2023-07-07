@@ -50,41 +50,6 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
-    @Operation(summary = "로그아웃")
-    @GetMapping("/logout")
-    public ResponseEntity<?> logout(@Parameter(hidden = true) @AuthenticationPrincipal Long userId) {
-        String logoutUrl = "https://kapi.kakao.com/v1/user/logout";
-        log.info("logout, userId : {}",userId);
-
-        String token = tokenService.findToken(userId);
-
-        try {
-            URL url = new URL(logoutUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Authorization", "Bearer " + token);
-
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-            String result = "";
-            String line = "";
-
-            while ((line = br.readLine()) != null) {
-                result += line;
-            }
-            System.out.println(result);
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return ResponseEntity.ok(userId);
-    }
-
     @Operation(summary = "회원 탈퇴 (작업전)")
     @DeleteMapping()
     public ResponseEntity<?> deleteUser() {
